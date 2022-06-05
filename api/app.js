@@ -26,7 +26,7 @@ app.post('/', (req, res) => { // adds a new note, and send it again
   })
 })
 
-app.delete('/note/:id', (req, res) => {
+app.delete('/:id', (req, res) => {
   NotesModel.findByIdAndDelete(req.params.id).then(del => {
     res.status(200).end()
   }).catch(err => res.status(400, err))

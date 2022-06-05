@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Input, Send, Name } from "./Insert.style";
 import { FormData, Note } from "../types";
-import useGetAllNotes from '../hooks/useGetAllNotes'
 
 const postData = (data: FormData) =>{
     const CONFIG = {
@@ -26,7 +25,7 @@ export default function Insert (props: { set: React.Dispatch<React.SetStateActio
     const handleSubmit = (e: React.FormEvent<HTMLFormElement>)=>{
         e.preventDefault()  
         setVal('')
-        setInfo({...info, content: val, date: Date()  })
+        setInfo({...info, content: val.trim(), date: Date()  })
     }
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {

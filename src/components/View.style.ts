@@ -53,3 +53,21 @@ export const Delete = styled.b`
         cursor: pointer;
     }
 `
+
+export const Edit = styled.button`
+    border: none;
+    outline: none;
+    font-size: 1.5rem;
+    border: 1px solid black;
+    padding: .3rem;
+    position: absolute;
+    right: 4rem;
+    top: 1rem;
+    background: black;
+    color: white;
+
+    &:hover {
+        background-color: #333;
+        cursor: pointer;
+    }
+`

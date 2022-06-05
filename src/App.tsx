@@ -22,7 +22,7 @@ function App() {
     <Insert set={setNotes}/> 
 
     {
-      notes ?  <View list={notes} />
+      notes ?  <View list={notes} update={setNotes} />
             : ''
     }
    
