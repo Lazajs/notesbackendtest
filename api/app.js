@@ -26,10 +26,18 @@ app.post('/', (req, res) => { // adds a new note, and send it again
   })
 })
 
-app.delete('/:id', (req, res) => {
+app.delete('/:id', (req, res) => { // deletes the note, returns the status
   NotesModel.findByIdAndDelete(req.params.id).then(del => {
     res.status(200).end()
   }).catch(err => res.status(400, err))
+})
+
+app.put('/', (req, res) => { // Updates a note, returns the status
+  const { id, content } = req.body.data
+
+  NotesModel.findByIdAndUpdate(id, { content })
+    .then(res.status(204).end())
+    .catch(e => res.status(400).end())
 })
 
 app.listen(PORT, () => console.log(`Server on port ${PORT}`))
