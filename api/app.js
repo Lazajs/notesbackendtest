@@ -3,41 +3,12 @@ const app = express()
 const PORT = process.env.PORT || 3001
 const cors = require('cors')
 const connectDB = require('./db/mongo')
-const NotesModel = require('./db/models/Note')
+const noteRoutes = require('./controllers/noteRoutes')
 
 connectDB() // connects to the cluster of mongodb atlas
+
 app.use(cors())
 app.use(express.json())
-
-app.get('/', (req, res) => { // gets all the notes
-  NotesModel.find({}).then(data => res.send(data))
-})
-
-app.post('/', (req, res) => { // adds a new note, and send it again
-  const data = req.body
-
-  const newNote = new NotesModel({
-    ...data
-  })
-  newNote.save().then(saved => {
-    const { content, _id, important, date, name } = saved
-    const id = _id
-    res.send({ id, content, important, date, name })
-  })
-})
-
-app.delete('/:id', (req, res) => { // deletes the note, returns the status
-  NotesModel.findByIdAndDelete(req.params.id).then(del => {
-    res.status(200).end()
-  }).catch(err => res.status(400, err))
-})
-
-app.put('/', (req, res) => { // Updates a note, returns the status
-  const { id, content } = req.body.data
-
-  NotesModel.findByIdAndUpdate(id, { content })
-    .then(res.status(204).end())
-    .catch(e => res.status(400).end())
-})
+app.use('/notes', noteRoutes) // Every endpoint for the /notes path
 
 app.listen(PORT, () => console.log(`Server on port ${PORT}`))

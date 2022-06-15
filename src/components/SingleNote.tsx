@@ -25,7 +25,7 @@ export default function SingleNote (props: {info: Note, list: Note[], update: Re
                 }
             }
 
-            fetch(`http://localhost:3001`, OPTIONS)
+            fetch(`http://localhost:3001/notes`, OPTIONS)
                 .then(res => {
                     if (res.ok) update(tempList)
                 })
@@ -56,7 +56,7 @@ export default function SingleNote (props: {info: Note, list: Note[], update: Re
         const inner: string = element.value
         const note: any = list.find(obj => obj.content === inner)
 
-        fetch(`http://localhost:3001/${note.id}`, {method: 'DELETE'}).then(statusCode => {
+        fetch(`http://localhost:3001/notes/${note.id}`, {method: 'DELETE'}).then(statusCode => {
         if (statusCode.ok) props.update(prev => prev.filter(el => el.content !== inner))})
     }
 

@@ -10,7 +10,7 @@ const postData = (data: FormData) =>{
         },
         body: JSON.stringify(data)
     }
-    return fetch('http://localhost:3001', CONFIG).then(res => res.json())
+    return fetch('http://localhost:3001/notes', CONFIG).then(res => res.json())
 }
 
 export default function Insert (props: { set: React.Dispatch<React.SetStateAction<Note[]>>}) {
