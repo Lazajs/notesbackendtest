@@ -35,3 +35,7 @@ function App() {
   
 
 export default App
+
+// crear ruta de login en /
+// agregar el formulario y los endpoints
+// usar wouter
