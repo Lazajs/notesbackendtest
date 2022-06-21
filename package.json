@@ -7,10 +7,10 @@
   },
   "dependencies": {
     "@types/styled-components": "^5.1.25",
-    "bcrypt": "^5.0.1",
     "react": "^17.0.0",
     "react-dom": "^17.0.0",
-    "styled-components": "^5.3.5"
+    "styled-components": "^5.3.5",
+    "wouter": "^2.8.0-alpha.2"
   },
   "devDependencies": {
     "@types/react": "^17.0.0",

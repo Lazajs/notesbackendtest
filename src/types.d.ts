@@ -22,3 +22,15 @@ export interface FormDataFromRequest {
   __v?: number
   id?: string
 }
+
+export interface FormLoginData {
+  username: string,
+  password: string
+}
+
+export interface FormRegisterData {
+  username: string,
+  password: string,
+  confirmation:string,
+  email: string
+}
