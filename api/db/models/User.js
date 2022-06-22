@@ -4,7 +4,10 @@ const userSchema = new mongoose.Schema({
   username: String,
   passwordHash: String,
   email: String,
-  notes: []
+  notes: [{
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'Note'
+  }]
 })
 
 userSchema.set('toJSON', {

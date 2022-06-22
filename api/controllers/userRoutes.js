@@ -13,14 +13,16 @@ userRoutes.post('/', async (req, res) => {
   newUser.save().then(user => res.status(204).end())
 })
 
-userRoutes.post('/register', async (req, res) => {
+userRoutes.post('/login', async (req, res) => {
   const { username, password } = req.body
 
   const documents = await UserModel.find({ username })
   documents.forEach(async (el) => {
     const match = await bcrypt.compare(password, el.passwordHash)
-    if (match) res.status(200).end()
-    else res.status(404).end()
+    if (match) {
+      console.log(el)
+      res.status(200).send({ user: el })
+    } else res.status(404).end()
   })
 })
 

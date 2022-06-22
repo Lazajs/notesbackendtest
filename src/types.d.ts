@@ -10,7 +10,8 @@ export interface FormData {
   name: string,
   content: string,
   important: boolean,
-  date: string
+  date: string,
+  userID: string
 }
 
 export interface FormDataFromRequest {
@@ -33,4 +34,11 @@ export interface FormRegisterData {
   password: string,
   confirmation:string,
   email: string
+}
+
+export interface UserData {
+  email: string,
+  id: string,
+  notes: Note[],
+  username: string
 }

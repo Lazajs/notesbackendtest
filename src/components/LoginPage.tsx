@@ -1,27 +1,30 @@
 import React, { useEffect, useState } from "react"
 import { Form, Input, Send, LinkToRegister } from "./LoginPage.style"
-import { FormLoginData } from "../types"
+import { FormLoginData, UserData } from "../types"
 import { useLocation } from "wouter"
 
-export default function LoginPage() {
+export default function LoginPage(props: { user: React.Dispatch<React.SetStateAction<UserData>> }) {
     const [info, setInfo] = useState<FormLoginData>({ username: '', password: '' })
-    const [location, setLocation] = useLocation()
+    const [, setLocation] = useLocation()
 
     useEffect(() => {
         const { username, password } = info
 
         if (username && password) {
-            fetch('http://localhost:3001/user/register', {
+            fetch('http://localhost:3001/user/login', {
                 method: 'POST',
                 body: JSON.stringify(info),
                 headers: {
                     'Content-Type': 'application/json'
                 }
-            }).then(res => {
-                if (res.ok) setLocation('/notes')
-            }).catch(err => console.log(err))
+            })
+                .then(res => res.json())
+                .then(nres => {
+                    if (nres.user) props.user(nres.user)
+                })
+                .catch(err => console.log(err))
         }
-
+        // ARREGLAR : LA ACCION A USAR PARA LOGUEARSE Y TENER EL USERID, PARA RECUPERAR LAS NOTAS 
     }, [info])
 
     const handleSumbit = (e: React.SyntheticEvent) => {
