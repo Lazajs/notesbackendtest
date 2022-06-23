@@ -2,9 +2,10 @@ const noteRoutes = require('express').Router()
 const NotesModel = require('../db/models/Note')
 const UserModel = require('../db/models/User')
 
-noteRoutes.get('/', (req, res) => { // gets all the notes
-  NotesModel.find({}).then(data => res.send(data))
-})
+// noteRoutes.get('/', (req, res) => { // gets all the notes
+
+//   NotesModel.find({}).then(data => res.send(data))
+// })
 
 noteRoutes.post('/', async (req, res) => { // adds a new note, and send it again
   const data = req.body

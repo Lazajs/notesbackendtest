@@ -16,7 +16,8 @@ userRoutes.post('/', async (req, res) => {
 userRoutes.post('/login', async (req, res) => {
   const { username, password } = req.body
 
-  const documents = await UserModel.find({ username })
+  const documents = await UserModel.find({ username }).populate('notes')
+
   documents.forEach(async (el) => {
     const match = await bcrypt.compare(password, el.passwordHash)
     if (match) {

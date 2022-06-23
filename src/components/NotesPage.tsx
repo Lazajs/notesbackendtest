@@ -1,18 +1,16 @@
 import React, { useState, useEffect } from "react"
-import useGetAllNotes from "../hooks/useGetAllNotes"
 import { Note, UserData } from "../types"
 import Insert from "./Insert"
 import View from "./View"
+import { useLocation } from "wouter"
 
 export default function NotesPage(props: { user: UserData }) {
-    const [notes, setNotes] = useState<Array<Note>>([]) //shown
+    const [notes, setNotes] = useState<Array<Note>>(props.user.notes) //shown
+    const [, setLocation] = useLocation()
 
     useEffect(() => {
-        useGetAllNotes().then(res => {
-            setNotes(res)
-        })
+        if (!props.user.username) setLocation('/')
     }, [])
-
 
 
     return (<>
