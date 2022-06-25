@@ -1,10 +1,10 @@
 const userRoutes = require('express').Router()
 const UserModel = require('../db/models/User')
 const bcrypt = require('bcrypt')
+const jwt = require('jsonwebtoken')
 
 userRoutes.post('/', async (req, res) => {
   const cuerpinho = req.body
-  console.log(cuerpinho)
   const { password } = cuerpinho
   const passwordHash = await bcrypt.hash(password, 10)
   delete cuerpinho.password
@@ -20,9 +20,18 @@ userRoutes.post('/login', async (req, res) => {
 
   documents.forEach(async (el) => {
     const match = await bcrypt.compare(password, el.passwordHash)
+
     if (match) {
-      console.log(el)
-      res.status(200).send({ user: el })
+      const userForToken = { username: el.username, id: el._id } // usuario para el que se creara el token
+      const token = jwt.sign(userForToken, '123') // firma del token, segundo parametro es la firma secreta, tercero el tiempo de expiracion en segundos
+
+      const usuario = {
+        username: el.username,
+        notes: el.notes,
+        userToken: token
+      }
+
+      res.status(200).send({ user: usuario })
     } else res.status(404).end()
   })
 })

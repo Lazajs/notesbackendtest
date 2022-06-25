@@ -12,12 +12,21 @@ export default function NotesPage(props: { user: UserData }) {
         if (!props.user.username) setLocation('/')
     }, [])
 
+    useEffect(() => {
+        const current = localStorage.getItem('loggedUser')
+
+        if (current && notes.length > 1) {
+            const obj = JSON.parse(current)
+            localStorage.clear()
+            localStorage.setItem('loggedUser', JSON.stringify({ ...obj, notes: notes }))
+        }
+    }, [notes])
 
     return (<>
         <Insert set={setNotes} user={props.user} />
 
         {
-            notes ? <View list={notes} update={setNotes} />
+            notes ? <View list={notes} user={props.user} update={setNotes} />
                 : ''
         }
     </>

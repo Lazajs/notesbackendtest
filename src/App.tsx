@@ -8,11 +8,20 @@ import { useLocation } from 'wouter'
 import { UserData } from "./types"
 
 function App() {
-  const [userData, setUserData] = useState<UserData>({ id: '', username: '', email: '', notes: [] })
+  const [userData, setUserData] = useState<UserData>({ username: '', notes: [], userToken: '' })
   const [, setLocation] = useLocation()
 
   useEffect(() => {
-    if (userData.id && userData.username) {
+    const loggedUser: any = localStorage.getItem('loggedUser')
+    const parsedUser: UserData = JSON.parse(loggedUser)
+
+    if (parsedUser) {
+      setUserData(parsedUser)
+    }
+  }, [])
+
+  useEffect(() => {
+    if (userData && userData.username) {
       console.log(userData)
       setLocation('/notes')
     }

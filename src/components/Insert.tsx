@@ -6,7 +6,8 @@ const postData = (data: FormData) => {
     const CONFIG = {
         method: 'POST',
         headers: {
-            'Content-Type': 'application/json;charset=utf-8'
+            'Content-Type': 'application/json;charset=utf-8',
+            'Authorization': 'Bearer ' + data.userToken
         },
         body: JSON.stringify(data)
     }
@@ -14,13 +15,13 @@ const postData = (data: FormData) => {
 }
 
 export default function Insert(props: { set: React.Dispatch<React.SetStateAction<Note[]>>, user: UserData }) {
-    const [info, setInfo] = useState<FormData>({ name: props.user.username, content: '', important: false, date: '', userID: props.user.id })
+    const [info, setInfo] = useState<FormData>({ content: '', important: false, date: '', userToken: props.user.userToken })
     const [val, setVal] = useState<string>('')
 
     useEffect(() => {
         if (info.content) postData(info).then(res => {
             props.set(prev => prev.concat(res))
-        })
+        }).catch(console.log)
     }, [info])
 
     const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
@@ -35,7 +36,7 @@ export default function Insert(props: { set: React.Dispatch<React.SetStateAction
 
     return (
         <>
-            <Name>{info.name}</Name>
+            <Name>{props.user.username}</Name>
             <form onSubmit={handleSubmit}>
                 <Input value={val} onChange={handleChange} type='text' />
                 {val ? <Send>Send</Send> : ''}

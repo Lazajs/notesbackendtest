@@ -1,9 +1,9 @@
 import { Comment, Delete, Edit, Name, Fecha, Contenido } from "./SingleNote.style"
-import React,{ChangeEvent, useEffect, useRef, useState} from "react"
-import { Note } from "../types"
+import React, { ChangeEvent, useEffect, useRef, useState } from "react"
+import { Note, UserData } from "../types"
 
-export default function SingleNote (props: {info: Note, list: Note[], update: React.Dispatch<React.SetStateAction<Note[]>> }) {
-    const { info, list, update } = props
+export default function SingleNote(props: { info: Note, list: Note[], update: React.Dispatch<React.SetStateAction<Note[]>>, user: UserData }) {
+    const { info, list, update, user } = props
     const [isEditMode, setEditMode] = useState<boolean>(true)
     const [currContent, setCurrContent] = useState<string>(info.content)
 
@@ -19,9 +19,10 @@ export default function SingleNote (props: {info: Note, list: Note[], update: Re
 
             const OPTIONS = {
                 method: 'PUT',
-                body: JSON.stringify({data : {id, content: currContent}}),
+                body: JSON.stringify({ data: { id, content: currContent } }),
                 headers: {
-                    'Content-type': 'application/json'
+                    'Content-type': 'application/json',
+                    'Authorization': 'Bearer ' + user.userToken
                 }
             }
 
@@ -29,10 +30,10 @@ export default function SingleNote (props: {info: Note, list: Note[], update: Re
                 .then(res => {
                     if (res.ok) update(tempList)
                 })
-        } 
+        }
 
 
-    },[currContent, isEditMode])
+    }, [currContent, isEditMode])
 
 
     const handleContent = (e: ChangeEvent<HTMLInputElement>) => setCurrContent(e.target.value)
@@ -56,15 +57,16 @@ export default function SingleNote (props: {info: Note, list: Note[], update: Re
         const inner: string = element.value
         const note: any = list.find(obj => obj.content === inner)
 
-        fetch(`http://localhost:3001/notes/${note.id}`, {method: 'DELETE'}).then(statusCode => {
-        if (statusCode.ok) props.update(prev => prev.filter(el => el.content !== inner))})
+        fetch(`http://localhost:3001/notes/${note.id}`, { method: 'DELETE', headers: { 'Authorization': 'Bearer ' + user.userToken } }).then(statusCode => {
+            if (statusCode.ok) props.update(prev => prev.filter(el => el.content !== inner))
+        })
     }
 
-    return  <Comment >
-                    <Delete onClick={handleDelete}>X</Delete>
-                    <Edit onClick={handleUpdate}>{!isEditMode ? 'Save' : 'Edit note'}</Edit>
-                    <Name>{info.name + '\t'}</Name>
-                    <Fecha>{'\t'+ info.date}</Fecha>
-                    <Contenido readOnly value={currContent} onChange={handleContent}/>
-                </Comment>
+    return <Comment >
+        <Delete onClick={handleDelete}>X</Delete>
+        <Edit onClick={handleUpdate}>{!isEditMode ? 'Save' : 'Edit note'}</Edit>
+        <Name>{info.name + '\t'}</Name>
+        <Fecha>{'\t' + info.date}</Fecha>
+        <Contenido readOnly value={currContent} onChange={handleContent} />
+    </Comment>
 }

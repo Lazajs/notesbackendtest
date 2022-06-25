@@ -20,11 +20,13 @@ export default function LoginPage(props: { user: React.Dispatch<React.SetStateAc
             })
                 .then(res => res.json())
                 .then(nres => {
-                    if (nres.user) props.user(nres.user)
+                    if (nres.user) {
+                        localStorage.setItem('loggedUser', JSON.stringify(nres.user))
+                        props.user(nres.user)
+                    }
                 })
                 .catch(err => console.log(err))
         }
-        // ARREGLAR : LA ACCION A USAR PARA LOGUEARSE Y TENER EL USERID, PARA RECUPERAR LAS NOTAS 
     }, [info])
 
     const handleSumbit = (e: React.SyntheticEvent) => {
